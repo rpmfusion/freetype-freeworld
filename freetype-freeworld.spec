@@ -7,8 +7,8 @@
 
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.3.6
-Release: 2%{?dist}
+Version: 2.3.7
+Release: 1%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -122,6 +122,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/fonts/conf.d/*.conf
 
 %changelog
+* Tue Sep 02 2008 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.7-1
+- Update to 2.3.7
+
 * Sat Aug 09 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info - 2.3.6-2
 - rebuild for RPM Fusion
 
