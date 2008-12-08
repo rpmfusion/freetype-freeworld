@@ -8,7 +8,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.3.5
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -29,6 +29,7 @@ Patch89:  freetype-2.2.1-memcpy-fix.patch
 
 # Upstream patches
 Patch90:  freetype-2.3.5-CVEs.patch
+Patch101: freetype-autohinter-ligature.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -80,6 +81,7 @@ FreeType.
 %patch89 -p1 -b .memcpy
 
 %patch90 -p1 -b .CVEs
+%patch101 -p0 -b .autohinter-ligature
 
 %build
 
@@ -129,6 +131,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/fonts/conf.d/*.conf
 
 %changelog
+* Mon Dec 08 2008 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.5-6
+- Add freetype-autohinter-ligature.patch by Behdad Esfahbod (rh#368561)
+
 * Sat Aug 09 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info - 2.3.5-5
 - rebuild for RPM Fusion
 
