@@ -8,7 +8,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.3.7
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -25,6 +25,7 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 Patch89:  freetype-2.2.1-memcpy-fix.patch
 
 # Upstream patches
+Patch101: freetype-autohinter-ligature.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -74,6 +75,8 @@ FreeType.
 
 %patch89 -p1 -b .memcpy
 
+%patch101 -p0 -b .autohinter-ligature
+
 %build
 
 %configure --disable-static
@@ -122,6 +125,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/fonts/conf.d/*.conf
 
 %changelog
+* Mon Dec 08 2008 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.7-2
+- Add freetype-autohinter-ligature.patch by Behdad Esfahbod (rh#368561)
+
 * Tue Sep 02 2008 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.7-1
 - Update to 2.3.7
 
