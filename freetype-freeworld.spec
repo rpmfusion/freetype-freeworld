@@ -7,7 +7,7 @@
 
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.3.8
+Version: 2.3.9
 Release: 1%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
@@ -120,6 +120,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/fonts/conf.d/*.conf
 
 %changelog
+* Fri Mar 20 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.9-1
+- Update to 2.3.9
+
 * Thu Jan 15 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.8-1
 - Update to 2.3.8
 - Remove freetype-autohinter-ligature.patch (fixed upstream)
