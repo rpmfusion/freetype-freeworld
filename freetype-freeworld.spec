@@ -8,7 +8,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.3.9
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -25,6 +25,13 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 Patch89:  freetype-2.2.1-memcpy-fix.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
+
+%if !0%{?without_bytecode_interpreter}
+Provides: freetype-bytecode
+%endif
+%if !0%{?without_subpixel_rendering}
+Provides: freetype-subpixel
+%endif
 
 Requires:      /etc/ld.so.conf.d
 BuildRequires: libX11-devel
@@ -120,6 +127,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/fonts/conf.d/*.conf
 
 %changelog
+* Sat Mar 28 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.9-2
+- Provides freetype-bytecode and freetype-subpixel (rh#155210)
+
 * Fri Mar 20 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.9-1
 - Update to 2.3.9
 
