@@ -8,7 +8,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.3.9
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -23,6 +23,9 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 
 # Fix crash https://bugs.freedesktop.org/show_bug.cgi?id=6841
 Patch89:  freetype-2.2.1-memcpy-fix.patch
+
+# Fix aliasing issue
+Patch90: freetype-2.3.9-aliasing.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -78,6 +81,7 @@ FreeType.
 %patch46  -p1 -b .enable-valid
 
 %patch89 -p1 -b .memcpy
+%patch90 -p1 -b .aliasing
 
 %build
 
@@ -127,6 +131,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/fonts/conf.d/*.conf
 
 %changelog
+* Tue Jul 28 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.9-3
+- Add freetype-2.3.9-aliasing.patch to fix Navit crash (rh#513582)
+
 * Sat Mar 28 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.9-2
 - Provides freetype-bytecode and freetype-subpixel (rh#155210)
 
