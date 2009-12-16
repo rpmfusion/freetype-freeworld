@@ -1,19 +1,13 @@
-# Enable patented bytecode interpreter and patented subpixel rendering.
-# Setting to 1 disables them.
-%define without_bytecode_interpreter    0
-%define without_subpixel_rendering      0
-
 %{!?with_xfree86:%define with_xfree86 1}
 
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.3.11
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
-Source1: 99-DejaVu-autohinter-only.conf
 
 Patch20:  freetype-2.1.10-enable-ft2-bci.patch
 Patch21:  freetype-2.3.0-enable-spr.patch
@@ -23,12 +17,8 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
-%if !0%{?without_bytecode_interpreter}
 Provides: freetype-bytecode
-%endif
-%if !0%{?without_subpixel_rendering}
 Provides: freetype-subpixel
-%endif
 
 Requires:      /etc/ld.so.conf.d
 BuildRequires: libX11-devel
@@ -41,36 +31,15 @@ manages font files as well as efficiently load, hint and render
 individual glyphs. FreeType is not a font server or a complete
 text-rendering library.
 
-This version is compiled with the patented bytecode interpreter and subpixel
-rendering enabled. It transparently overrides the system library using
-ld.so.conf.d.
-
-
-%package devel
-Summary: FreeType development libraries and header files
-Group: Development/Libraries
-Requires: %{name} = %{version}-%{release}
-Requires: zlib-devel
-Requires: pkgconfig
-
-%description devel
-The freetype-devel package includes the static libraries and header files
-for the FreeType font rendering engine.
-
-Install freetype-devel if you want to develop programs which will use
-FreeType.
+This version is compiled with the patented subpixel rendering enabled. It
+transparently overrides the system library using ld.so.conf.d.
 
 
 %prep
 %setup -q -n freetype-%{version}
 
-%if ! %{without_bytecode_interpreter}
 %patch20  -p1 -b .enable-ft2-bci
-%endif
-
-%if ! %{without_subpixel_rendering}
 %patch21  -p1 -b .enable-spr
-%endif
 
 %patch46  -p1 -b .enable-valid
 
@@ -103,10 +72,6 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d
 echo "%{_libdir}/%{name}" \
      >$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
-# Disable BCI for DejaVu and Vera because it changes the font weight
-install -D -p -m 0755 %{SOURCE1} \
-  $RPM_BUILD_ROOT%{_sysconfdir}/fonts/conf.d/99-DejaVu-autohinter-only.conf
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -119,9 +84,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}
 %doc ChangeLog README docs/LICENSE.TXT docs/FTL.TXT docs/GPL.TXT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
-%config(noreplace) %{_sysconfdir}/fonts/conf.d/*.conf
 
 %changelog
+* Wed Dec 16 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.11-2
+- Drop conditionals, always build the bytecode interpreter (now also in Fedora)
+  and subpixel rendering (as that's the only reason to build freetype-freeworld
+  at all)
+- Drop 99-DejaVu-autohinter-only.conf
+
 * Wed Dec 16 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.11-1
 - Update to 2.3.11 (matches Fedora freetype, fixes aliasing issue rh#513582)
 - Drop upstreamed memcpy-fix patch
