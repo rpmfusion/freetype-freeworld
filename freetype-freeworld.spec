@@ -7,8 +7,8 @@
 
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.3.9
-Release: 2%{?dist}
+Version: 2.3.11
+Release: 1%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -20,9 +20,6 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
-
-# Fix crash https://bugs.freedesktop.org/show_bug.cgi?id=6841
-Patch89:  freetype-2.2.1-memcpy-fix.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -77,8 +74,6 @@ FreeType.
 
 %patch46  -p1 -b .enable-valid
 
-%patch89 -p1 -b .memcpy
-
 %build
 
 %configure --disable-static
@@ -127,6 +122,10 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/fonts/conf.d/*.conf
 
 %changelog
+* Wed Dec 16 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.11-1
+- Update to 2.3.11 (matches Fedora freetype, fixes aliasing issue rh#513582)
+- Drop upstreamed memcpy-fix patch
+
 * Sat Mar 28 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.9-2
 - Provides freetype-bytecode and freetype-subpixel (rh#155210)
 
