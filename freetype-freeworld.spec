@@ -1,9 +1,14 @@
+# Enable patented bytecode interpreter and patented subpixel rendering.
+# Setting to 1 disables them.
+%define without_bytecode_interpreter    0
+%define without_subpixel_rendering      0
+
 %{!?with_xfree86:%define with_xfree86 1}
 
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.3.11
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -15,10 +20,28 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
 
+# Security patches
+Patch89:  freetype-2.3.11-CVE-2010-2498.patch
+Patch90:  freetype-2.3.11-CVE-2010-2499.patch
+Patch91:  freetype-2.3.11-CVE-2010-2500.patch
+Patch92:  freetype-2.3.11-CVE-2010-2519.patch
+Patch93:  freetype-2.3.11-CVE-2010-2520.patch
+Patch94:  freetype-2.3.11-CVE-2010-2527.patch
+Patch95:  freetype-2.3.11-CVE-2010-2541.patch
+Patch96:  freetype-2.3.11-CVE-2010-1797.patch
+Patch97:  freetype-2.3.11-CVE-2010-2805.patch
+Patch98:  freetype-2.3.11-CVE-2010-2806.patch
+Patch99:  freetype-2.3.11-CVE-2010-2808.patch
+Patch100:  freetype-2.3.11-CVE-2010-3311.patch
+
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
+%if !0%{?without_bytecode_interpreter}
 Provides: freetype-bytecode
+%endif
+%if !0%{?without_subpixel_rendering}
 Provides: freetype-subpixel
+%endif
 
 Requires:      /etc/ld.so.conf.d
 BuildRequires: libX11-devel
@@ -31,17 +54,37 @@ manages font files as well as efficiently load, hint and render
 individual glyphs. FreeType is not a font server or a complete
 text-rendering library.
 
-This version is compiled with the patented subpixel rendering enabled. It
-transparently overrides the system library using ld.so.conf.d.
+This version is compiled with the patented subpixel rendering and the formerly
+patented bytecode interpreter (which is still disabled in the stock Fedora
+packages for technical reasons) enabled. It transparently overrides the system
+library using ld.so.conf.d.
 
 
 %prep
 %setup -q -n freetype-%{version}
 
+%if ! %{without_bytecode_interpreter}
 %patch20  -p1 -b .enable-ft2-bci
+%endif
+
+%if ! %{without_subpixel_rendering}
 %patch21  -p1 -b .enable-spr
+%endif
 
 %patch46  -p1 -b .enable-valid
+
+%patch89 -p1 -b .CVE-2010-2498
+%patch90 -p1 -b .CVE-2010-2499
+%patch91 -p1 -b .CVE-2010-2500
+%patch92 -p1 -b .CVE-2010-2519
+%patch93 -p1 -b .CVE-2010-2520
+%patch94 -p1 -b .CVE-2010-2527
+%patch95 -p1 -b .CVE-2010-2541
+%patch96 -p1 -b .CVE-2010-1797
+%patch97 -p1 -b .CVE-2010-2805
+%patch98 -p1 -b .CVE-2010-2806
+%patch99 -p1 -b .CVE-2010-2808
+%patch100 -p1 -b .CVE-2010-3311
 
 %build
 
@@ -86,6 +129,40 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Tue Oct 05 2010 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.11-3
+- Update the description to reflect that the bytecode interpreter was disabled
+  in Fedora again.
+- Restore the conditionals (for the above reason).
+- Add freetype-2.3.11-CVE-2010-2805.patch
+    (Fix comparison.)
+- Add freetype-2.3.11-CVE-2010-2806.patch
+    (Protect against negative string_size. Fix comparison.)
+- Add freetype-2.3.11-CVE-2010-2808.patch
+    (Check the total length of collected POST segments.)
+- Add freetype-2.3.11-CVE-2010-3311.patch
+    (Don't seek behind end of stream.)
+- Resolves: rh#638522
+- Add freetype-2.3.11-CVE-2010-1797.patch
+    (Check stack after execution of operations too.
+     Skip the evaluations of the values in decoder, if
+     cff_decoder_parse_charstrings() returns any error.)
+- Resolves: rh#621627
+- Add freetype-2.3.11-CVE-2010-2498.patch
+    (Assure that `end_point' is not larger than `glyph->num_points')
+- Add freetype-2.3.11-CVE-2010-2499.patch
+    (Check the buffer size during gathering PFB fragments)
+- Add freetype-2.3.11-CVE-2010-2500.patch
+    (Use smaller threshold values for `width' and `height')
+- Add freetype-2.3.11-CVE-2010-2519.patch
+    (Check `rlen' the length of fragment declared in the POST fragment header)
+- Add freetype-2.3.11-CVE-2010-2520.patch
+    (Fix bounds check)
+- Add freetype-2.3.11-CVE-2010-2527.patch
+    (Use precision for `%s' where appropriate to avoid buffer overflows)
+- Add freetype-2.3.11-CVE-2010-2541.patch
+    (Avoid overflow when dealing with names of axes)
+- Resolves: rh#613299
+
 * Wed Dec 16 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.11-2
 - Drop conditionals, always build the bytecode interpreter (now also in Fedora)
   and subpixel rendering (as that's the only reason to build freetype-freeworld
