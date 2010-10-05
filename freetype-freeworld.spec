@@ -162,10 +162,6 @@ rm -rf $RPM_BUILD_ROOT
     (Check `rlen' the length of fragment declared in the POST fragment header)
 - Add freetype-2.3.11-CVE-2010-2520.patch
     (Fix bounds check)
-- Add freetype-2.3.11-CVE-2010-2527.patch
-    (Use precision for `%s' where appropriate to avoid buffer overflows)
-- Add freetype-2.3.11-CVE-2010-2541.patch
-    (Avoid overflow when dealing with names of axes)
 - Resolves: rh#613299
 
 * Wed Dec 16 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.11-1
