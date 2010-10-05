@@ -26,8 +26,6 @@ Patch90:  freetype-2.3.11-CVE-2010-2499.patch
 Patch91:  freetype-2.3.11-CVE-2010-2500.patch
 Patch92:  freetype-2.3.11-CVE-2010-2519.patch
 Patch93:  freetype-2.3.11-CVE-2010-2520.patch
-Patch94:  freetype-2.3.11-CVE-2010-2527.patch
-Patch95:  freetype-2.3.11-CVE-2010-2541.patch
 Patch96:  freetype-2.3.11-CVE-2010-1797.patch
 Patch97:  freetype-2.3.11-CVE-2010-2805.patch
 Patch98:  freetype-2.3.11-CVE-2010-2806.patch
@@ -78,8 +76,6 @@ library using ld.so.conf.d.
 %patch91 -p1 -b .CVE-2010-2500
 %patch92 -p1 -b .CVE-2010-2519
 %patch93 -p1 -b .CVE-2010-2520
-%patch94 -p1 -b .CVE-2010-2527
-%patch95 -p1 -b .CVE-2010-2541
 %patch96 -p1 -b .CVE-2010-1797
 %patch97 -p1 -b .CVE-2010-2805
 %patch98 -p1 -b .CVE-2010-2806
