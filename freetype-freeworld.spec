@@ -1,9 +1,12 @@
-%{!?with_xfree86:%define with_xfree86 1}
+# Enable patented bytecode interpreter and patented subpixel rendering.
+# Setting to 1 disables them.
+%define without_bytecode_interpreter    0
+%define without_subpixel_rendering      0
 
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.3.11
-Release: 2%{?dist}
+Version: 2.4.2
+Release: 1%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -17,8 +20,12 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
+%if !0%{?without_bytecode_interpreter}
 Provides: freetype-bytecode
+%endif
+%if !0%{?without_subpixel_rendering}
 Provides: freetype-subpixel
+%endif
 
 Requires:      /etc/ld.so.conf.d
 BuildRequires: libX11-devel
@@ -31,15 +38,22 @@ manages font files as well as efficiently load, hint and render
 individual glyphs. FreeType is not a font server or a complete
 text-rendering library.
 
-This version is compiled with the patented subpixel rendering enabled. It
-transparently overrides the system library using ld.so.conf.d.
+This version is compiled with the patented subpixel rendering and the formerly
+patented bytecode interpreter (which is still disabled in the stock Fedora
+packages for technical reasons) enabled. It transparently overrides the system
+library using ld.so.conf.d.
 
 
 %prep
 %setup -q -n freetype-%{version}
 
-%patch20  -p1 -b .enable-ft2-bci
+%if 0%{without_bytecode_interpreter}
+%patch20  -p1 -R -b .enable-ft2-bci
+%endif
+
+%if !0%{without_subpixel_rendering}
 %patch21  -p1 -b .enable-spr
+%endif
 
 %patch46  -p1 -b .enable-valid
 
@@ -86,6 +100,13 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Wed Oct 06 2010 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.2-1
+- Update to 2.4.2 (matches Fedora freetype, fixes several security issues)
+- Update the description to reflect that the bytecode interpreter was disabled
+  in the stock Fedora freetype again.
+- Restore the conditionals (for the above reason).
+- Remove unused with_xfree86 conditional.
+
 * Wed Dec 16 2009 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.11-2
 - Drop conditionals, always build the bytecode interpreter (now also in Fedora)
   and subpixel rendering (as that's the only reason to build freetype-freeworld
