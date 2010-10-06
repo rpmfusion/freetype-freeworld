@@ -6,7 +6,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -17,6 +17,9 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
+
+# Security patch
+Patch89:  freetype-2.4.2-CVE-2010-3311.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -56,6 +59,8 @@ library using ld.so.conf.d.
 %endif
 
 %patch46  -p1 -b .enable-valid
+
+%patch89 -p1 -b .CVE-2010-3311
 
 %build
 
@@ -100,6 +105,11 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Wed Oct 06 2010 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.2-2
+- Add freetype-2.4.2-CVE-2010-3311.patch
+    (Don't seek behind end of stream.)
+- Resolves: rh#638522
+
 * Wed Oct 06 2010 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.2-1
 - Update to 2.4.2 (matches Fedora freetype, fixes several security issues)
 - Update the description to reflect that the bytecode interpreter was disabled
