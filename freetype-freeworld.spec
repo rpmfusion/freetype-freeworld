@@ -8,7 +8,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.3.11
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -32,6 +32,7 @@ Patch97:  freetype-2.3.11-CVE-2010-2805.patch
 Patch98:  freetype-2.3.11-CVE-2010-2806.patch
 Patch99:  freetype-2.3.11-CVE-2010-2808.patch
 Patch100:  freetype-2.3.11-CVE-2010-3311.patch
+Patch101:  freetype-2.3.11-CVE-2010-3855.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -82,6 +83,7 @@ library using ld.so.conf.d.
 %patch98 -p1 -b .CVE-2010-2806
 %patch99 -p1 -b .CVE-2010-2808
 %patch100 -p1 -b .CVE-2010-3311
+%patch101 -p1 -b .CVE-2010-3855
 
 %build
 
@@ -131,6 +133,11 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/fonts/conf.d/*.conf
 
 %changelog
+* Mon Nov 15 2010 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.11-3
+- Add freetype-2.3.11-CVE-2010-3855.patch
+    (Protect against invalid `runcnt' values.)
+- Resolves: rh#651764
+
 * Tue Oct 05 2010 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.11-2
 - Update the description to reflect that the bytecode interpreter is no longer
   patented (but still disabled in the stock Fedora freetype).
