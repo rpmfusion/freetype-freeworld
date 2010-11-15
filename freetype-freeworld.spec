@@ -3,8 +3,6 @@
 %define without_bytecode_interpreter    0
 %define without_subpixel_rendering      0
 
-%{!?with_xfree86:%define with_xfree86 1}
-
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.3.11
@@ -131,6 +129,7 @@ rm -rf $RPM_BUILD_ROOT
 - Add freetype-2.3.11-CVE-2010-3855.patch
     (Protect against invalid `runcnt' values.)
 - Resolves: rh#651764
+- Remove unused with_xfree86 conditional.
 
 * Tue Oct 05 2010 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.3.11-3
 - Update the description to reflect that the bytecode interpreter was disabled
