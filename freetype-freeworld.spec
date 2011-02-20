@@ -1,18 +1,12 @@
-# Enable patented bytecode interpreter and patented subpixel rendering.
-# Setting to 1 disables them.
-%define without_bytecode_interpreter    0
-%define without_subpixel_rendering      0
-
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
 
-Patch20:  freetype-2.1.10-enable-ft2-bci.patch
 Patch21:  freetype-2.3.0-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
@@ -21,14 +15,17 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 # Security patch
 Patch89:  freetype-2.4.2-CVE-2010-3311.patch
 
+# Backport from upstream git:
+# Fall back to autohinting if a TTF/OTF doesn't contain any bytecode.
+# Submitted by Kevin Kofler based on a patch from infinality.net, edited and
+# committed by Werner Lemberg.
+# Should be in the next upstream release.
+Patch90:  freetype-2.4.4-auto-autohint.patch
+
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
-%if !0%{?without_bytecode_interpreter}
 Provides: freetype-bytecode
-%endif
-%if !0%{?without_subpixel_rendering}
 Provides: freetype-subpixel
-%endif
 
 Requires:      /etc/ld.so.conf.d
 BuildRequires: libX11-devel
@@ -41,26 +38,19 @@ manages font files as well as efficiently load, hint and render
 individual glyphs. FreeType is not a font server or a complete
 text-rendering library.
 
-This version is compiled with the patented subpixel rendering and the formerly
-patented bytecode interpreter (which is still disabled in the stock Fedora
-packages for technical reasons) enabled. It transparently overrides the system
-library using ld.so.conf.d.
+This version is compiled with the patented subpixel rendering enabled.
+It transparently overrides the system library using ld.so.conf.d.
 
 
 %prep
 %setup -q -n freetype-%{version}
 
-%if 0%{without_bytecode_interpreter}
-%patch20  -p1 -R -b .enable-ft2-bci
-%endif
-
-%if !0%{without_subpixel_rendering}
 %patch21  -p1 -b .enable-spr
-%endif
 
 %patch46  -p1 -b .enable-valid
 
 %patch89 -p1 -b .CVE-2010-3311
+%patch90 -p1 -b .auto-autohint
 
 %build
 
@@ -105,6 +95,15 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Sun Feb 20 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.4-2
+- Update the description to reflect that the bytecode interpreter was reenabled
+  in the stock Fedora freetype, hopefully this time for good (see rh#612395).
+- Drop conditionals (again), always build the bytecode interpreter (now also in
+  Fedora) and subpixel rendering (as that's the only reason to build
+  freetype-freeworld at all)
+- Fall back to autohinting if a TTF/OTF doesn't contain any bytecode (rh#547532,
+  patch backported from upstream git, also in Fedora freetype)
+
 * Thu Dec 02 2010 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.4-1
 - Update to 2.4.4 (matches Fedora freetype)
 - Drop freetype-2.4.3-CVE-2010-3855.patch (fixed upstream)
