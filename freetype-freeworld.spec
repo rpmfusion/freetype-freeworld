@@ -23,7 +23,7 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 # Submitted by Kevin Kofler based on a patch from infinality.net, edited and
 # committed by Werner Lemberg.
 # Should be in the next upstream release.
-Patch50:  freetype-2.4.4-auto-autohint.patch
+Patch50:  freetype-2.3.11-auto-autohint.patch
 
 # Security patches
 Patch89:  freetype-2.3.11-CVE-2010-2498.patch
