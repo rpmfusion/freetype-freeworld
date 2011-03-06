@@ -54,15 +54,6 @@ index 6b01f43..708055f 100644
            autohint = TRUE;
        }
      }
-@@ -1869,7 +1872,7 @@
-                     " is already checked and"
-                     " no font is found\n", i ));
-         continue;
--      }  
-+      }
- 
-       if ( errors[i] )
-       {
 @@ -4151,7 +4154,7 @@
        FT_Renderer  renderer = FT_RENDERER( module );
  
