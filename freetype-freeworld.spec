@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -21,6 +21,9 @@ Patch89:  freetype-2.4.2-CVE-2010-3311.patch
 # committed by Werner Lemberg.
 # Should be in the next upstream release.
 Patch90:  freetype-2.4.4-auto-autohint.patch
+# Fix the above autohinting fallback: Ignore CFF-based OTFs.
+# Should be in the next upstream release.
+Patch91:  freetype-2.4.4-auto-autohint-fix.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -51,6 +54,7 @@ It transparently overrides the system library using ld.so.conf.d.
 
 %patch89 -p1 -b .CVE-2010-3311
 %patch90 -p1 -b .auto-autohint
+%patch91 -p1 -b .auto-autohint-fix
 
 %build
 
@@ -95,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Tue Mar 08 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.4-3
+- Fix autohinting fallback (rh#547532): Ignore CFF-based OTFs.
+
 * Sun Feb 20 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.4-2
 - Update the description to reflect that the bytecode interpreter was reenabled
   in the stock Fedora freetype, hopefully this time for good (see rh#612395).
