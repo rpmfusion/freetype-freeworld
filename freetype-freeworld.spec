@@ -85,7 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %{_libdir}/%{name}
-%doc ChangeLog README docs/LICENSE.TXT docs/FTL.TXT docs/GPL.TXT
+%doc ChangeLog README docs/LICENSE.TXT docs/FTL.TXT docs/GPLv2.TXT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
