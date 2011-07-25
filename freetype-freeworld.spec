@@ -6,7 +6,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.2
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -31,6 +31,7 @@ Patch51:  freetype-2.4.4-auto-autohint-fix.patch
 # Security patches
 Patch89:  freetype-2.4.2-CVE-2010-3311.patch
 Patch90:  freetype-2.4.2-CVE-2010-3855.patch
+Patch91:  freetype-2.4.2-CVE-2011-0226.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -75,6 +76,7 @@ library using ld.so.conf.d.
 
 %patch89 -p1 -b .CVE-2010-3311
 %patch90 -p1 -b .CVE-2010-3855
+%patch91 -p1 -b .CVE-2011-0226
 
 %build
 
@@ -119,6 +121,12 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Mon Jul 25 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.2-6
+- Add freetype-2.4.2-CVE-2011-0226.patch from Fedora freetype (rh#723469)
+    (Add better argument check for `callothersubr'.)
+    - based on patches by Werner Lemberg,
+      Alexei Podtelezhnikov and Matthias Drochner
+
 * Tue Mar 08 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.2-5
 - Fix autohinting fallback (rh#547532): Ignore CFF-based OTFs.
 
