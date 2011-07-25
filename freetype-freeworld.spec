@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.4
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -12,18 +12,19 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
 
-# Security patch
+# Security patches
 Patch89:  freetype-2.4.2-CVE-2010-3311.patch
+Patch90:  freetype-2.4.4-CVE-2011-0226.patch
 
 # Backport from upstream git:
 # Fall back to autohinting if a TTF/OTF doesn't contain any bytecode.
 # Submitted by Kevin Kofler based on a patch from infinality.net, edited and
 # committed by Werner Lemberg.
 # Should be in the next upstream release.
-Patch90:  freetype-2.4.4-auto-autohint.patch
+Patch100:  freetype-2.4.4-auto-autohint.patch
 # Fix the above autohinting fallback: Ignore CFF-based OTFs.
 # Should be in the next upstream release.
-Patch91:  freetype-2.4.4-auto-autohint-fix.patch
+Patch101:  freetype-2.4.4-auto-autohint-fix.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -53,8 +54,10 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch46  -p1 -b .enable-valid
 
 %patch89 -p1 -b .CVE-2010-3311
-%patch90 -p1 -b .auto-autohint
-%patch91 -p1 -b .auto-autohint-fix
+%patch90 -p1 -b .CVE-2011-0226
+
+%patch100 -p1 -b .auto-autohint
+%patch101 -p1 -b .auto-autohint-fix
 
 %build
 
@@ -99,6 +102,12 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Mon Jul 25 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.4-4
+- Add freetype-2.4.4-CVE-2011-0226.patch from Fedora freetype (rh#723469)
+    (Add better argument check for `callothersubr'.)
+    - based on patches by Werner Lemberg,
+      Alexei Podtelezhnikov and Matthias Drochner
+
 * Tue Mar 08 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.4-3
 - Fix autohinting fallback (rh#547532): Ignore CFF-based OTFs.
 
