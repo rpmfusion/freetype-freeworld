@@ -1,6 +1,6 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.4.5
+Version: 2.4.6
 Release: 1%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
@@ -14,7 +14,6 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 
 # Security patches
 Patch89:  freetype-2.4.2-CVE-2010-3311.patch
-Patch90:  freetype-2.4.5-CVE-2011-0226.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -44,7 +43,6 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch46  -p1 -b .enable-valid
 
 %patch89 -p1 -b .CVE-2010-3311
-%patch90 -p1 -b .CVE-2011-0226
 
 %build
 
@@ -89,6 +87,10 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Thu Aug 04 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.6-1
+- Update to 2.4.6 (matches Fedora freetype)
+- Drop freetype-2.4.5-CVE-2011-0226.patch (fixed upstream)
+
 * Mon Jul 25 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.5-1
 - Update to 2.4.5 (matches Fedora freetype)
 - Drop upstreamed auto-autohint patches
