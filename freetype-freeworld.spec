@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.6
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -89,6 +89,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Fri Oct 28 2011 Nicolas Chauvet <kwizart@gmail.com> - 2.4.6-3
+- Fix for glibc bug rhbz#747377
+
 * Sun Oct 23 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.6-2
 - Add freetype-2.4.6-CVE-2011-3256.patch from Fedora freetype
     (Handle some border cases)
