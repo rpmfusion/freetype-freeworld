@@ -6,7 +6,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.2
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -22,10 +22,10 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 # Fall back to autohinting if a TTF/OTF doesn't contain any bytecode.
 # Submitted by Kevin Kofler based on a patch from infinality.net, edited and
 # committed by Werner Lemberg.
-# Should be in the next upstream release.
+# Upstreamed in 2.4.5.
 Patch50:  freetype-2.4.4-auto-autohint.patch
 # Fix the above autohinting fallback: Ignore CFF-based OTFs.
-# Should be in the next upstream release.
+# Upstreamed in 2.4.5.
 Patch51:  freetype-2.4.4-auto-autohint-fix.patch
 
 # Security patches
@@ -33,6 +33,7 @@ Patch89:  freetype-2.4.2-CVE-2010-3311.patch
 Patch90:  freetype-2.4.2-CVE-2010-3855.patch
 Patch91:  freetype-2.4.2-CVE-2011-0226.patch
 Patch92:  freetype-2.4.2-CVE-2011-3256.patch
+Patch93:  freetype-2.4.2-CVE-2011-3439.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -79,6 +80,7 @@ library using ld.so.conf.d.
 %patch90 -p1 -b .CVE-2010-3855
 %patch91 -p1 -b .CVE-2011-0226
 %patch92 -p1 -b .CVE-2011-3256
+%patch93 -p1 -b .CVE-2011-3439
 
 %build
 
@@ -123,8 +125,11 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Thu Nov 17 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.2-8
+- Add freetype-2.4.2-CVE-2011-3439.patch from Fedora freetype (rh#753837)
+
 * Sun Oct 23 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.2-7
-- Add freetype-2.4.2-CVE-2011-3256.patch from Fedora freetype
+- Add freetype-2.4.2-CVE-2011-3256.patch from Fedora freetype (rh#749174)
     (Handle some border cases)
 
 * Mon Jul 25 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.2-6
