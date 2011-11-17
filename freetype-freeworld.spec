@@ -86,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 - Update to 2.4.8 (matches Fedora freetype, fixes CVE-2011-3439 (rh#753837))
 - Drop CVE-2011-3256 patch, fixed upstream
 - Drop CVE-2010-3311 patch, fixed differently upstream for a while, and the
-  additional change added by that patch is no longer need
+  additional change added by that patch is no longer needed
 
 * Fri Oct 28 2011 Nicolas Chauvet <kwizart@gmail.com> - 2.4.6-3
 - Fix for glibc bug rhbz#747377
