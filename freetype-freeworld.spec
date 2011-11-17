@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.4.6
-Release: 3%{?dist}
+Version: 2.4.8
+Release: 1%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -11,10 +11,6 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
-
-# Security patches
-Patch89:  freetype-2.4.2-CVE-2010-3311.patch
-Patch90:  freetype-2.4.6-CVE-2011-3256.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -42,9 +38,6 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch21  -p1 -b .enable-spr
 
 %patch46  -p1 -b .enable-valid
-
-%patch89 -p1 -b .CVE-2010-3311
-%patch90 -p1 -b .CVE-2011-3256
 
 %build
 
@@ -89,11 +82,17 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Thu Nov 17 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.8-1
+- Update to 2.4.8 (matches Fedora freetype, fixes CVE-2011-3439 (rh#753837))
+- Drop CVE-2011-3256 patch, fixed upstream
+- Drop CVE-2010-3311 patch, fixed differently upstream for a while, and the
+  additional change added by that patch is no longer need
+
 * Fri Oct 28 2011 Nicolas Chauvet <kwizart@gmail.com> - 2.4.6-3
 - Fix for glibc bug rhbz#747377
 
 * Sun Oct 23 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.6-2
-- Add freetype-2.4.6-CVE-2011-3256.patch from Fedora freetype
+- Add freetype-2.4.6-CVE-2011-3256.patch from Fedora freetype (rh#749174)
     (Handle some border cases)
 
 * Thu Aug 04 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.6-1
