@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.8
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -82,6 +82,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Wed Nov 23 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.8-2
+- Rebuild for #2031
+
 * Thu Nov 17 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.8-1
 - Update to 2.4.8 (matches Fedora freetype, fixes CVE-2011-3439 (rh#753837))
 - Drop CVE-2011-3256 patch, fixed upstream
