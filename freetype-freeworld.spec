@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.8
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -11,6 +11,27 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
+
+# Security patches
+Patch89:  freetype-2.4.8-CVE-2012-1126.patch
+Patch90:  freetype-2.4.8-CVE-2012-1127.patch
+Patch91:  freetype-2.4.8-CVE-2012-1128.patch
+Patch92:  freetype-2.4.8-CVE-2012-1130.patch
+Patch93:  freetype-2.4.8-CVE-2012-1131.patch
+Patch94:  freetype-2.4.8-CVE-2012-1132.patch
+Patch95:  freetype-2.4.8-CVE-2012-1133.patch
+Patch96:  freetype-2.4.8-CVE-2012-1134.patch
+Patch97:  freetype-2.4.8-CVE-2012-1135.patch
+Patch98:  freetype-2.4.8-CVE-2012-1136.patch
+Patch99:  freetype-2.4.8-CVE-2012-1137.patch
+Patch100:  freetype-2.4.8-CVE-2012-1138.patch
+Patch101:  freetype-2.4.8-CVE-2012-1139.patch
+Patch102:  freetype-2.4.8-CVE-2012-1140.patch
+Patch103:  freetype-2.4.8-CVE-2012-1141.patch
+Patch104:  freetype-2.4.8-CVE-2012-1142.patch
+Patch105:  freetype-2.4.8-CVE-2012-1143.patch
+Patch106:  freetype-2.4.8-CVE-2012-1144.patch
+Patch107:  freetype-2.4.8-bdf-overflow.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -38,6 +59,26 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch21  -p1 -b .enable-spr
 
 %patch46  -p1 -b .enable-valid
+
+%patch89  -p1 -b .CVE-2012-1126
+%patch90  -p1 -b .CVE-2012-1127
+%patch91  -p1 -b .CVE-2012-1128
+%patch92  -p1 -b .CVE-2012-1130
+%patch93  -p1 -b .CVE-2012-1131
+%patch94  -p1 -b .CVE-2012-1132
+%patch95  -p1 -b .CVE-2012-1133
+%patch96  -p1 -b .CVE-2012-1134
+%patch97  -p1 -b .CVE-2012-1135
+%patch98  -p1 -b .CVE-2012-1136
+%patch99  -p1 -b .CVE-2012-1137
+%patch100 -p1 -b .CVE-2012-1138
+%patch101 -p1 -b .CVE-2012-1139
+%patch102 -p1 -b .CVE-2012-1140
+%patch103 -p1 -b .CVE-2012-1141
+%patch104 -p1 -b .CVE-2012-1142
+%patch105 -p1 -b .CVE-2012-1143
+%patch106 -p1 -b .CVE-2012-1144
+%patch107 -p1 -b .bdf-overflow
 
 %build
 
@@ -82,6 +123,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Mon Apr 02 2012 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.8-3
+- Add security patches from Fedora freetype-2.4.8-3 (rh#806270)
+
 * Wed Nov 23 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.8-2
 - Rebuild for #2031
 
