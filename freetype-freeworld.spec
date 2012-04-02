@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.4.8
-Release: 2%{?dist}
+Version: 2.4.9
+Release: 1%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -11,6 +11,16 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
+
+# Security patches
+Patch89:  freetype-2.4.9-CVE-2012-1139.patch
+Patch90:  freetype-2.4.9-CVE-2012-1141.patch
+
+# https://savannah.nongnu.org/bugs/?35833
+Patch91:  freetype-2.4.9-loop-exit-condition.patch
+
+# https://savannah.nongnu.org/bugs/?35847
+Patch92:  freetype-2.4.9-incremental-interface.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -38,6 +48,12 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch21  -p1 -b .enable-spr
 
 %patch46  -p1 -b .enable-valid
+
+%patch89 -p1 -b .CVE-2012-1139
+%patch90 -p1 -b .CVE-2012-1141
+%patch91 -p1 -b .loop-exit-condition
+%patch92 -p1 -b .incremental-interface
+
 
 %build
 
@@ -82,6 +98,10 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Mon Apr 02 2012 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.9-1
+- Update to 2.4.9 (matches Fedora freetype, fixes various CVEs (rh#806270))
+- Add additional security and bugfix patches from Fedora freetype-2.4.9-1
+
 * Wed Nov 23 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.8-2
 - Rebuild for #2031
 
