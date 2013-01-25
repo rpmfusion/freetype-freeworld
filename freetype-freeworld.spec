@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.10
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -11,6 +11,10 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
+
+# Security patches
+# https://bugzilla.redhat.com/show_bug.cgi?id=903554
+Patch89:  freetype-2.4.10-CVE-2012-5669.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -38,6 +42,8 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch21  -p1 -b .enable-spr
 
 %patch46  -p1 -b .enable-valid
+
+%patch89 -p1 -b .CVE-2012-5669
 
 
 %build
@@ -83,6 +89,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Fri Jan 25 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.10-2
+- Add freetype-2.4.10-CVE-2012-5669.patch from Fedora freetype (rh#903554)
+
 * Mon Jul 16 2012 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.10-1
 - Update to 2.4.10 (matches Fedora freetype, rh#832651)
 - Drop upstreamed patches (CVE-2012-1139, CVE-2012-1141, backported bugfixes)
