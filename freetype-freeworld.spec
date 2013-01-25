@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.8
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: FTL or GPLv2+
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -32,6 +32,8 @@ Patch104:  freetype-2.4.8-CVE-2012-1142.patch
 Patch105:  freetype-2.4.8-CVE-2012-1143.patch
 Patch106:  freetype-2.4.8-CVE-2012-1144.patch
 Patch107:  freetype-2.4.8-bdf-overflow.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=903554
+Patch108:  freetype-2.4.8-CVE-2012-5669.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -79,6 +81,7 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch105 -p1 -b .CVE-2012-1143
 %patch106 -p1 -b .CVE-2012-1144
 %patch107 -p1 -b .bdf-overflow
+%patch108 -p1 -b .CVE-2012-5669
 
 %build
 
@@ -123,6 +126,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Fri Jan 25 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.8-4
+- Add freetype-2.4.8-CVE-2012-5669.patch from Fedora freetype (rh#903554)
+
 * Mon Apr 02 2012 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.8-3
 - Add security patches from Fedora freetype-2.4.8-3 (rh#806270)
 
