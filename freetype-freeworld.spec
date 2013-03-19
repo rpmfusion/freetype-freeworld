@@ -1,8 +1,8 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.10
-Release: 2%{?dist}
-License: FTL or GPLv2+
+Release: 3%{?dist}
+License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 Group: System Environment/Libraries
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
@@ -12,9 +12,12 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
 
-# Security patches
+# Security patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=903554
 Patch89:  freetype-2.4.10-CVE-2012-5669.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=891457
+Patch90:  freetype-2.4.10-fix-emboldening.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -44,6 +47,8 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch46  -p1 -b .enable-valid
 
 %patch89 -p1 -b .CVE-2012-5669
+
+%patch90 -p1 -b .fix-emboldening
 
 
 %build
@@ -89,6 +94,10 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Tue Mar 19 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.10-3
+- Add freetype-2.4.10-fix-emboldening.patch from Fedora freetype (rh#891457)
+- Fix License tag
+
 * Fri Jan 25 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.10-2
 - Add freetype-2.4.10-CVE-2012-5669.patch from Fedora freetype (rh#903554)
 
