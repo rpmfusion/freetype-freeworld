@@ -1,6 +1,6 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.4.12
+Version: 2.5.0.1
 Release: 1%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 Group: System Environment/Libraries
@@ -12,9 +12,6 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=959771
-Patch89:  freetype-2.4.12-enable-adobe-cff-engine.patch
-
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
 Provides: freetype-bytecode
@@ -22,6 +19,7 @@ Provides: freetype-subpixel
 
 Requires:      /etc/ld.so.conf.d
 BuildRequires: libX11-devel
+BuildRequires: libpng-devel
 
 %description
 The FreeType engine is a free and portable font rendering
@@ -41,8 +39,6 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch21  -p1 -b .enable-spr
 
 %patch46  -p1 -b .enable-valid
-
-%patch89 -p1 -b .adobe-cff
 
 
 %build
@@ -88,6 +84,11 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Sun Sep 15 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.0.1-1
+- Update to 2.5.0.1 (matches Fedora freetype)
+- BuildRequires: libpng-devel
+- Drop obsolete backported freetype-2.4.12-enable-adobe-cff-engine.patch
+
 * Thu May 09 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.12-1
 - Update to 2.4.12 (matches Fedora freetype)
 - Drop freetype-2.4.11-fix-emboldening.patch (fixed upstream)
