@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.5.0.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -11,6 +11,9 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
+
+# https://bugzilla.gnome.org/show_bug.cgi?id=686709
+Patch92:  0001-Fix-vertical-size-of-emboldened-glyphs.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -36,9 +39,11 @@ It transparently overrides the system library using ld.so.conf.d.
 %prep
 %setup -q -n freetype-%{version}
 
-%patch21  -p1 -b .enable-spr
+%patch21 -p1 -b .enable-spr
 
-%patch46  -p1 -b .enable-valid
+%patch46 -p1 -b .enable-valid
+
+%patch92 -p1 -b .emboldened-glyphs
 
 
 %build
@@ -84,6 +89,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Sat Sep 21 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.0.1-2
+- Apply 0001-Fix-vertical-size-of-emboldened-glyphs.patch from Fedora
+
 * Sun Sep 15 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.0.1-1
 - Update to 2.5.0.1 (matches Fedora freetype)
 - BuildRequires: libpng-devel
