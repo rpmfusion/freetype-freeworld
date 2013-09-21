@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.4.11
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -14,6 +14,9 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=891457
 Patch89:  freetype-2.4.11-fix-emboldening.patch
+
+# https://bugzilla.gnome.org/show_bug.cgi?id=686709
+Patch90:  0001-Fix-vertical-size-of-emboldened-glyphs.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -38,11 +41,12 @@ It transparently overrides the system library using ld.so.conf.d.
 %prep
 %setup -q -n freetype-%{version}
 
-%patch21  -p1 -b .enable-spr
+%patch21 -p1 -b .enable-spr
 
-%patch46  -p1 -b .enable-valid
+%patch46 -p1 -b .enable-valid
 
 %patch89 -p1 -b .emboldening
+%patch90 -p1 -b .emboldened-glyphs
 
 
 %build
@@ -88,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Sat Sep 21 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.11-3
+- Apply 0001-Fix-vertical-size-of-emboldened-glyphs.patch from Fedora
+
 * Tue Mar 19 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.4.11-2
 - Add freetype-2.4.11-fix-emboldening.patch from Fedora freetype (rh#891457)
 - Fix License tag
