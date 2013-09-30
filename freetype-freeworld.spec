@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.5.0.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -89,6 +89,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Mon Sep 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 2.5.0.1-3
+- Rebuilt
+
 * Sat Sep 21 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.0.1-2
 - Apply 0001-Fix-vertical-size-of-emboldened-glyphs.patch from Fedora
 
