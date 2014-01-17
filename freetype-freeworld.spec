@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.5.0.1
-Release: 3%{?dist}
+Version: 2.5.2
+Release: 1%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -11,9 +11,6 @@ Patch21:  freetype-2.3.0-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
-
-# https://bugzilla.gnome.org/show_bug.cgi?id=686709
-Patch92:  0001-Fix-vertical-size-of-emboldened-glyphs.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -42,8 +39,6 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch21 -p1 -b .enable-spr
 
 %patch46 -p1 -b .enable-valid
-
-%patch92 -p1 -b .emboldened-glyphs
 
 
 %build
@@ -89,6 +84,11 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Sun Sep 15 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.2-1
+- Update to 2.5.2 (matches Fedora freetype, rh#1034065)
+- Fix incorrect weekdays in the changelog
+- Drop upstreamed 0001-Fix-vertical-size-of-emboldened-glyphs.patch
+
 * Mon Sep 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 2.5.0.1-3
 - Rebuilt
 
@@ -238,7 +238,7 @@ rm -rf $RPM_BUILD_ROOT
 - Disable BCI for DejaVu and Vera because it changes the font weight
 - Update description
 
-* Tue Apr 05 2007 Behdad Esfahbod <besfahbo@redhat.com> 2.3.4-1
+* Thu Apr 05 2007 Behdad Esfahbod <besfahbo@redhat.com> 2.3.4-1
 - Update to 2.3.4.
 
 * Thu Apr 05 2007 Behdad Esfahbod <besfahbo@redhat.com> 2.3.3-2
@@ -430,7 +430,7 @@ rm -rf $RPM_BUILD_ROOT
 - Add a patch to implement FT_LOAD_TARGET_LIGHT
 - Fix up freetype-1.4-libtool.patch 
 
-* Sat Dec 12 2002 Mike A. Harris <mharris@redhat.com> 2.1.3-2
+* Thu Dec 12 2002 Mike A. Harris <mharris@redhat.com> 2.1.3-2
 - Update to freetype 2.1.3
 - Removed ttmkfdir sources and patches, as they have been moved from the
   freetype packaging to XFree86 packaging, and now to the ttmkfdir package
