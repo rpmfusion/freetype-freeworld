@@ -7,7 +7,7 @@ Group: System Environment/Libraries
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
 
-Patch21:  freetype-2.3.0-enable-spr.patch
+Patch21:  freetype-2.5.2-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
@@ -88,6 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 - Update to 2.5.2 (matches Fedora freetype, rh#1034065)
 - Fix incorrect weekdays in the changelog
 - Drop upstreamed 0001-Fix-vertical-size-of-emboldened-glyphs.patch
+- Rebase enable-spr patch, ftoption.h moved
 
 * Mon Sep 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 2.5.0.1-3
 - Rebuilt
