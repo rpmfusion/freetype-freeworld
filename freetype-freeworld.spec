@@ -84,7 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
-* Sun Sep 15 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.2-1
+* Fri Jan 17 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.2-1
 - Update to 2.5.2 (matches Fedora freetype, rh#1034065)
 - Fix incorrect weekdays in the changelog
 - Drop upstreamed 0001-Fix-vertical-size-of-emboldened-glyphs.patch
