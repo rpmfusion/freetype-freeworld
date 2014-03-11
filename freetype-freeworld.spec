@@ -1,9 +1,8 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.5.2
+Version: 2.5.3
 Release: 1%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
-Group: System Environment/Libraries
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
 
@@ -12,14 +11,14 @@ Patch21:  freetype-2.5.2-enable-spr.patch
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
 
-BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
-
 Provides: freetype-bytecode
 Provides: freetype-subpixel
 
 Requires:      /etc/ld.so.conf.d
 BuildRequires: libX11-devel
 BuildRequires: libpng-devel
+BuildRequires: zlib-devel
+BuildRequires: bzip2-devel
 
 %description
 The FreeType engine is a free and portable font rendering
@@ -42,48 +41,48 @@ It transparently overrides the system library using ld.so.conf.d.
 
 
 %build
-
 %configure --disable-static
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' builds/unix/libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' builds/unix/libtool
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
 umask 0022
 
-%makeinstall gnulocaledir=$RPM_BUILD_ROOT%{_datadir}/locale
+%make_install
 
 # Don't package static a or .la files nor devel files
-rm -rf $RPM_BUILD_ROOT%{_libdir}/*.{a,la,so} \
-       $RPM_BUILD_ROOT%{_libdir}/pkgconfig $RPM_BUILD_ROOT%{_bindir} \
-       $RPM_BUILD_ROOT%{_datadir}/aclocal $RPM_BUILD_ROOT%{_includedir}
+rm -rf %{buildroot}%{_libdir}/*.{a,la,so} \
+       %{buildroot}%{_libdir}/pkgconfig %{buildroot}%{_bindir} \
+       %{buildroot}%{_datadir}/aclocal %{buildroot}%{_includedir} \
+       %{buildroot}%{_mandir}
 
 # Move library to avoid conflict with official FreeType package
-mkdir $RPM_BUILD_ROOT%{_libdir}/%{name}
-mv -f $RPM_BUILD_ROOT%{_libdir}/libfreetype.so.* \
-      $RPM_BUILD_ROOT%{_libdir}/%{name}
+mkdir %{buildroot}%{_libdir}/%{name}
+mv -f %{buildroot}%{_libdir}/libfreetype.so.* \
+      %{buildroot}%{_libdir}/%{name}
 
 # Register the library directory in /etc/ld.so.conf.d
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d
+mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
 echo "%{_libdir}/%{name}" \
-     >$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+     >%{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root)
 %{_libdir}/%{name}
 %doc ChangeLog README docs/LICENSE.TXT docs/FTL.TXT docs/GPLv2.TXT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Tue Mar 11 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.3-1
+- Update to 2.5.3 (matches Fedora freetype, rh#1073923)
+- Also delete the new manpages (-devel material)
+- Specfile cleanups (remove obsolete specfile idioms)
+- Enable support for bzip2 compressed fonts
+
 * Fri Jan 17 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.2-1
 - Update to 2.5.2 (matches Fedora freetype, rh#1034065)
 - Fix incorrect weekdays in the changelog
