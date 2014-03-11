@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.5.0.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -14,6 +14,11 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=686709
 Patch92:  0001-Fix-vertical-size-of-emboldened-glyphs.patch
+
+## Security fixes:
+# https://bugzilla.gnome.org/show_bug.cgi?id=1074647
+Patch93:  freetype-2.5.0-CVE-2014-2240.patch
+Patch94:  freetype-2.5.0-CVE-2014-2241.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -44,6 +49,9 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch46 -p1 -b .enable-valid
 
 %patch92 -p1 -b .emboldened-glyphs
+
+%patch93 -p1 -b .CVE-2014-2240
+%patch94 -p1 -b .CVE-2014-2241
 
 
 %build
@@ -89,7 +97,13 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
-* Mon Sep 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 2.5.0.1-3
+* Tue Mar 11 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.0.1-4
+- Add freetype-2.5.0-CVE-2014-2240.patch from Fedora freetype (rh#1074647)
+    (Return when `hintMask' is invalid.)
+- Add freetype-2.5.0-CVE-2014-2241.patch from Fedora freetype (rh#1074647)
+    (Don't call non-existing subroutines.)
+
+* Mon Sep 30 2013 Nicolas Chauvet <kwizart@gmail.com> 2.5.0.1-3
 - Rebuilt
 
 * Sat Sep 21 2013 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.0.1-2
