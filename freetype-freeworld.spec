@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.5.3
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
@@ -10,6 +10,11 @@ Patch21:  freetype-2.5.2-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
+
+## Security fixes:
+# https://bugzilla.gnome.org/show_bug.cgi?id=1172634
+Patch93:  freetype-2.5.3-hintmask.patch
+Patch94:  freetype-2.5.3-hintmap.patch
 
 Provides: freetype-bytecode
 Provides: freetype-subpixel
@@ -38,6 +43,9 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch21 -p1 -b .enable-spr
 
 %patch46 -p1 -b .enable-valid
+
+%patch93 -p1 -b .hintmask
+%patch94 -p1 -b .hintmap
 
 
 %build
@@ -77,6 +85,12 @@ echo "%{_libdir}/%{name}" \
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Fri Dec 12 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.3-3
+- Add freetype-2.5.3-hintmask.patch from Fedora freetype (rh#1172634)
+    (Don't append to stem arrays after hintmask is constructed.)
+- Add freetype-2.5.3-hintmap.patch from Fedora freetype (rh#1172634)
+    (Suppress an assert when hintMap.count == 0 in specific situations.)
+
 * Mon Sep 01 2014 Sérgio Basto <sergio@serjux.com> - 2.5.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
