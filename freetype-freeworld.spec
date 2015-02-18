@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.5.0.1
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 Group: System Environment/Libraries
 URL: http://www.freetype.org
@@ -16,13 +16,39 @@ Patch46:  freetype-2.2.1-enable-valid.patch
 Patch92:  0001-Fix-vertical-size-of-emboldened-glyphs.patch
 
 ## Security fixes:
-# https://bugzilla.gnome.org/show_bug.cgi?id=1074647
+# https://bugzilla.redhat.com/show_bug.cgi?id=1074647
 Patch93:  freetype-2.5.0-CVE-2014-2240.patch
 Patch94:  freetype-2.5.0-CVE-2014-2241.patch
 
-# https://bugzilla.gnome.org/show_bug.cgi?id=1172634
+# https://bugzilla.redhat.com/show_bug.cgi?id=1172634
 Patch95:  freetype-2.5.0-hintmask.patch
 Patch96:  freetype-2.5.0-hintmap.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1191099
+# https://bugzilla.redhat.com/show_bug.cgi?id=1191191
+# https://bugzilla.redhat.com/show_bug.cgi?id=1191193
+Patch97:  freetype-2.5.0-CVE-2014-9656.patch
+Patch98:  freetype-2.5.0-CVE-2014-9657.patch
+Patch99:  freetype-2.5.0-CVE-2014-9658.patch
+Patch100:  freetype-2.5.0-ft-strncmp.patch
+Patch101:  freetype-2.5.0-CVE-2014-9675.patch
+Patch102:  freetype-2.5.0-CVE-2014-9660.patch
+Patch103:  freetype-2.5.0-CVE-2014-9661a.patch
+Patch104:  freetype-2.5.0-CVE-2014-9661b.patch
+Patch105:  freetype-2.5.0-CVE-2014-9662.patch
+Patch106:  freetype-2.5.0-CVE-2014-9663.patch
+Patch107:  freetype-2.5.0-CVE-2014-9664a.patch
+Patch108:  freetype-2.5.0-CVE-2014-9664b.patch
+Patch109:  freetype-2.5.0-CVE-2014-9666.patch
+Patch110:  freetype-2.5.0-CVE-2014-9667.patch
+Patch111:  freetype-2.5.0-CVE-2014-9669.patch
+Patch112:  freetype-2.5.0-CVE-2014-9670.patch
+Patch113:  freetype-2.5.0-CVE-2014-9671.patch
+Patch114:  freetype-2.5.0-CVE-2014-9672.patch
+Patch115:  freetype-2.5.0-CVE-2014-9673.patch
+Patch117:  freetype-2.5.0-unsigned-long.patch
+Patch116:  freetype-2.5.0-CVE-2014-9674a.patch
+Patch118:  freetype-2.5.0-CVE-2014-9674b.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
@@ -59,6 +85,29 @@ It transparently overrides the system library using ld.so.conf.d.
 
 %patch95 -p1 -b .hintmask
 %patch96 -p1 -b .hintmap
+
+%patch97 -p1 -b .CVE-2014-9656
+%patch98 -p1 -b .CVE-2014-9657
+%patch99 -p1 -b .CVE-2014-9658
+%patch100 -p1 -b .ft-strncmp
+%patch101 -p1 -b .CVE-2014-9675
+%patch102 -p1 -b .CVE-2014-9660
+%patch103 -p1 -b .CVE-2014-9661a
+%patch104 -p1 -b .CVE-2014-9661b
+%patch105 -p1 -b .CVE-2014-9662
+%patch106 -p1 -b .CVE-2014-9663
+%patch107 -p1 -b .CVE-2014-9664a
+%patch108 -p1 -b .CVE-2014-9664b
+%patch109 -p1 -b .CVE-2014-9666
+%patch110 -p1 -b .CVE-2014-9667
+%patch111 -p1 -b .CVE-2014-9669
+%patch112 -p1 -b .CVE-2014-9670
+%patch113 -p1 -b .CVE-2014-9671
+%patch114 -p1 -b .CVE-2014-9672
+%patch115 -p1 -b .CVE-2014-9673
+%patch116 -p1 -b .unsigned-long
+%patch117 -p1 -b .CVE-2014-9674a
+%patch118 -p1 -b .CVE-2014-9674b
 
 
 %build
@@ -104,6 +153,54 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Wed Feb 18 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.0.1-6
+- Add freetype-2.5.0-CVE-2014-9656.patch from Fedora freetype (rh#1191099)
+    (Check `p' before `num_glyphs'.)
+- Add freetype-2.5.0-CVE-2014-9657.patch from Fedora freetype (rh#1191099)
+    (Check minimum size of `record_size'.)
+- Add freetype-2.5.0-CVE-2014-9658.patch from Fedora freetype (rh#1191099)
+    (Use correct value for minimum table length test.)
+- Add freetype-2.5.0-ft-strncmp.patch from Fedora freetype (rh#1191193)
+    (Fix http://savannah.nongnu.org/bugs/?41692. Prereq of CVE-2014-9675 patch.)
+- Add freetype-2.5.0-CVE-2014-9675.patch from Fedora freetype (rh#1191193)
+    (New macro that checks one character more than `strncmp'.)
+- Add freetype-2.5.0-CVE-2014-9660.patch from Fedora freetype (rh#1191099)
+    (Check `_BDF_GLYPH_BITS'.)
+- Add freetype-2.5.0-CVE-2014-9661a.patch from Fedora freetype (rh#1191099)
+    (Initialize `face->ttf_size'. Always set `face->ttf_size' directly.)
+- Add freetype-2.5.0-CVE-2014-9661b.patch from Fedora freetype (rh#1191099)
+    (Exclusively use the `truetype' font driver for loading the font contained
+     in the `sfnts' array.)
+- Add freetype-2.5.0-CVE-2014-9662.patch from Fedora freetype (rh#1191099)
+    (Handle return values of point allocation routines.)
+- Add freetype-2.5.0-CVE-2014-9663.patch from Fedora freetype (rh#1191099)
+    (Fix order of validity tests.)
+- Add freetype-2.5.0-CVE-2014-9664a.patch from Fedora freetype (rh#1191099)
+    (Add another boundary testing.)
+- Add freetype-2.5.0-CVE-2014-9664b.patch from Fedora freetype (rh#1191099)
+    (Fix boundary testing.)
+- Add freetype-2.5.0-CVE-2014-9666.patch from Fedora freetype (rh#1191099)
+    (Protect against addition and multiplication overflow.)
+- Add freetype-2.5.0-CVE-2014-9667.patch from Fedora freetype (rh#1191099)
+    (Protect against addition overflow.)
+- Add freetype-2.5.0-CVE-2014-9669.patch from Fedora freetype (rh#1191099)
+    (Protect against overflow in additions and multiplications.)
+- Add freetype-2.5.0-CVE-2014-9670.patch from Fedora freetype (rh#1191099)
+    (Add sanity checks for row and column values.)
+- Add freetype-2.5.0-CVE-2014-9671.patch from Fedora freetype (rh#1191099)
+    (Check `size' and `offset' values.)
+- Add freetype-2.5.0-CVE-2014-9672.patch from Fedora freetype (rh#1191095)
+    (Prevent a buffer overrun caused by a font including too many (> 63) strings
+     to store names[] table.)
+- Add freetype-2.5.0-CVE-2014-9673.patch from Fedora freetype (rh#1191096)
+    (Fix integer overflow by a broken POST table in resource-fork.)
+- Add freetype-2.5.0-unsigned-long.patch from Fedora freetype (rh#1191191)
+    (Use unsigned long variables to read the lengths in POST fragments.)
+- Add freetype-2.5.0-CVE-2014-9674a.patch from Fedora freetype (rh#1191191)
+    (Fix integer overflow by a broken POST table in resource-fork.)
+- Add freetype-2.5.0-CVE-2014-9674b.patch from Fedora freetype (rh#1191191)
+    (Additional overflow check in the summation of POST fragment lengths.)
+
 * Fri Dec 12 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.0.1-5
 - Add freetype-2.5.0-hintmask.patch from Fedora freetype (rh#1172634)
     (Don't append to stem arrays after hintmask is constructed.)
