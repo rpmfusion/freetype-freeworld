@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.5.3
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
@@ -42,6 +42,11 @@ Patch114:  freetype-2.5.3-CVE-2014-9673.patch
 Patch115:  freetype-2.5.3-CVE-2014-9674a.patch
 Patch116:  freetype-2.5.3-unsigned-long.patch
 Patch117:  freetype-2.5.3-CVE-2014-9674b.patch
+
+# fix regression from CVE-2014-9671 fix
+# https://bugzilla.redhat.com/show_bug.cgi?id=1195652
+Patch118:  freetype-2.5.3-pcf-read-a.patch
+Patch119:  freetype-2.5.3-pcf-read-b.patch
 
 Provides: freetype-bytecode
 Provides: freetype-subpixel
@@ -98,6 +103,9 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch116 -p1 -b .unsigned-long
 %patch117 -p1 -b .CVE-2014-9674b
 
+%patch118 -p1 -b .pcf-read-a
+%patch119 -p1 -b .pcf-read-b
+
 
 %build
 %configure --disable-static
@@ -136,6 +144,11 @@ echo "%{_libdir}/%{name}" \
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Tue Feb 24 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.3-5
+- Add freetype-2.5.3-pcf-read-a.patch and freetype-2.5.3-pcf-read-b.patch ("Work
+  around behaviour of X11's `pcfWriteFont' and `pcfReadFont' functions") from
+  Fedora freetype, fixes regression from CVE-2014-9671 fix (rh#1195652)
+
 * Wed Feb 18 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.3-4
 - Add freetype-2.5.3-CVE-2014-9656.patch from Fedora freetype (rh#1191099)
     (Check `p' before `num_glyphs'.)
