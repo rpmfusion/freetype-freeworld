@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.5.3
-Release: 5%{?dist}
+Version: 2.5.5
+Release: 1%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
@@ -12,41 +12,7 @@ Patch21:  freetype-2.5.2-enable-spr.patch
 Patch46:  freetype-2.2.1-enable-valid.patch
 
 ## Security fixes:
-# https://bugzilla.redhat.com/show_bug.cgi?id=1172634
-Patch93:  freetype-2.5.3-hintmask.patch
-Patch94:  freetype-2.5.3-hintmap.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1191099
-# https://bugzilla.redhat.com/show_bug.cgi?id=1191191
-# https://bugzilla.redhat.com/show_bug.cgi?id=1191193
-Patch95:  freetype-2.5.3-CVE-2014-9656.patch
-Patch96:  freetype-2.5.3-CVE-2014-9657.patch
-Patch97:  freetype-2.5.3-CVE-2014-9658.patch
-Patch98:  freetype-2.5.3-CVE-2014-9675.patch
-Patch99:  freetype-2.5.3-CVE-2014-9660.patch
-Patch100:  freetype-2.5.3-CVE-2014-9661a.patch
-Patch101:  freetype-2.5.3-CVE-2014-9661b.patch
-Patch102:  freetype-2.5.3-CVE-2014-9662.patch
-Patch103:  freetype-2.5.3-CVE-2014-9663.patch
-Patch104:  freetype-2.5.3-CVE-2014-9664a.patch
-Patch105:  freetype-2.5.3-CVE-2014-9664b.patch
-Patch106:  freetype-2.5.3-CVE-2014-9665.patch
-Patch107:  freetype-2.5.3-CVE-2014-9666.patch
-Patch108:  freetype-2.5.3-CVE-2014-9667.patch
-Patch109:  freetype-2.5.3-CVE-2014-9668.patch
-Patch110:  freetype-2.5.3-CVE-2014-9669.patch
-Patch111:  freetype-2.5.3-CVE-2014-9670.patch
-Patch112:  freetype-2.5.3-CVE-2014-9671.patch
-Patch113:  freetype-2.5.3-CVE-2014-9672.patch
-Patch114:  freetype-2.5.3-CVE-2014-9673.patch
-Patch115:  freetype-2.5.3-CVE-2014-9674a.patch
-Patch116:  freetype-2.5.3-unsigned-long.patch
-Patch117:  freetype-2.5.3-CVE-2014-9674b.patch
-
-# fix regression from CVE-2014-9671 fix
-# https://bugzilla.redhat.com/show_bug.cgi?id=1195652
-Patch118:  freetype-2.5.3-pcf-read-a.patch
-Patch119:  freetype-2.5.3-pcf-read-b.patch
+# none needed yet
 
 Provides: freetype-bytecode
 Provides: freetype-subpixel
@@ -76,39 +42,13 @@ It transparently overrides the system library using ld.so.conf.d.
 
 %patch46 -p1 -b .enable-valid
 
-%patch93 -p1 -b .hintmask
-%patch94 -p1 -b .hintmap
-
-%patch95 -p1 -b .CVE-2014-9656
-%patch96 -p1 -b .CVE-2014-9657
-%patch97 -p1 -b .CVE-2014-9658
-%patch98 -p1 -b .CVE-2014-9675
-%patch99 -p1 -b .CVE-2014-9660
-%patch100 -p1 -b .CVE-2014-9661a
-%patch101 -p1 -b .CVE-2014-9661b
-%patch102 -p1 -b .CVE-2014-9662
-%patch103 -p1 -b .CVE-2014-9663
-%patch104 -p1 -b .CVE-2014-9664a
-%patch105 -p1 -b .CVE-2014-9664b
-%patch106 -p1 -b .CVE-2014-9665
-%patch107 -p1 -b .CVE-2014-9666
-%patch108 -p1 -b .CVE-2014-9667
-%patch109 -p1 -b .CVE-2014-9668
-%patch110 -p1 -b .CVE-2014-9669
-%patch111 -p1 -b .CVE-2014-9670
-%patch112 -p1 -b .CVE-2014-9671
-%patch113 -p1 -b .CVE-2014-9672
-%patch114 -p1 -b .CVE-2014-9673
-%patch115 -p1 -b .CVE-2014-9674a
-%patch116 -p1 -b .unsigned-long
-%patch117 -p1 -b .CVE-2014-9674b
-
-%patch118 -p1 -b .pcf-read-a
-%patch119 -p1 -b .pcf-read-b
-
 
 %build
-%configure --disable-static
+%configure --disable-static \
+           --with-zlib=yes \
+           --with-bzip2=yes \
+           --with-png=yes \
+           --with-harfbuzz=no
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' builds/unix/libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' builds/unix/libtool
 make %{?_smp_mflags}
@@ -140,10 +80,17 @@ echo "%{_libdir}/%{name}" \
 
 %files
 %{_libdir}/%{name}
-%doc ChangeLog README docs/LICENSE.TXT docs/FTL.TXT docs/GPLv2.TXT
+%license docs/LICENSE.TXT docs/FTL.TXT docs/GPLv2.TXT
+%doc ChangeLog README
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Tue Jun 02 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.5-1
+- Update to 2.5.5 (matches Fedora freetype, rh#1178876)
+- Pass explicit configure flags to enable/disable required libraries (as Fedora)
+- Drop all backported security patches, already fixed in upstream 2.5.5
+- Mark license files as %%license instead of %%doc
+
 * Tue Feb 24 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.3-5
 - Add freetype-2.5.3-pcf-read-a.patch and freetype-2.5.3-pcf-read-b.patch ("Work
   around behaviour of X11's `pcfWriteFont' and `pcfReadFont' functions") from
