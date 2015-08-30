@@ -1,7 +1,7 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
 Version: 2.5.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
@@ -10,6 +10,9 @@ Patch21:  freetype-2.5.2-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=678397
+Patch93:  freetype-2.5.5-thread-safety.patch
 
 ## Security fixes:
 # none needed yet
@@ -41,6 +44,8 @@ It transparently overrides the system library using ld.so.conf.d.
 %patch21 -p1 -b .enable-spr
 
 %patch46 -p1 -b .enable-valid
+
+%patch93 -p1 -b .thread-safety
 
 
 %build
@@ -85,6 +90,10 @@ echo "%{_libdir}/%{name}" \
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Sun Aug 30 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.5-2
+- Add freetype-2.5.5-thread-safety.patch (backport patches for thread-safety)
+  from Fedora freetype (backported from upstream 2.5.6) (rh#678397)
+
 * Tue Jun 02 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.5.5-1
 - Update to 2.5.5 (matches Fedora freetype, rh#1178876)
 - Pass explicit configure flags to enable/disable required libraries (as Fedora)
