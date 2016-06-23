@@ -1,14 +1,12 @@
 Summary: A free and portable font rendering engine
 Name: freetype-freeworld
-Version: 2.6
+Version: 2.6.3
 Release: 1%{?dist}
 License: (FTL or GPLv2+) and BSD and MIT and Public Domain and zlib with acknowledgement
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
 
-Patch0:   0001-cff-Don-t-use-hmtx-table-for-LSB-45520.patch
-
-Patch21:  freetype-2.5.2-enable-spr.patch
+Patch21:  freetype-2.3.0-enable-spr.patch
 
 # Enable otvalid and gxvalid modules
 Patch46:  freetype-2.2.1-enable-valid.patch
@@ -39,8 +37,6 @@ It transparently overrides the system library using ld.so.conf.d.
 
 %prep
 %setup -q -n freetype-%{version}
-
-%patch0  -p1 -b .hmtx-table
 
 %patch21 -p1 -b .enable-spr
 
@@ -89,6 +85,11 @@ echo "%{_libdir}/%{name}" \
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %changelog
+* Thu Jun 23 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.6.3-1
+- Update to 2.6.3 (matches Fedora freetype)
+- Drop obsolete 0001-cff-Don-t-use-hmtx-table-for-LSB-45520.patch backport
+- Restore old (pre-2.5.2) enable-spr patch, ftoption.h moved back
+
 * Thu Oct 29 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> 2.6-1
 - Update to 2.6 (matches Fedora freetype, rh#1229688)
 - Drop obsolete freetype-2.5.5-thread-safety.patch backport
